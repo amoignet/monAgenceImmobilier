@@ -9,7 +9,8 @@ export class PropertiesService {
   properties = [
     {
       title: "Ma super maison",
-      category: "maison",
+      category: "Maison",
+      surface: '75',
       sold: true
     },
     {
@@ -19,7 +20,7 @@ export class PropertiesService {
     },
     {
       title: "Belle villa",
-      category: "maison",
+      category: "Maison",
       sold: true
     },
   ]
@@ -27,7 +28,7 @@ export class PropertiesService {
   propertiesSubject = new Subject<any[]>();
   // Subject est un type d'observable qui met à disposition le .next
   // Il faut voir le subject comme un émetteur il est à la fois un observable et un observer
-  // c a d qu'il va observer les donnés de properties et dès qu'il y aura une modifications il va les émettre
+  // c a d qu'il va observer les donnés de properties et dès qu'il y aura une modification il va les émettre
 
   constructor() { }
 
@@ -37,4 +38,21 @@ export class PropertiesService {
   }
 
   getProperties() {}
+
+
+  createProperties(property) {
+    this.properties.push(property)
+  }
+
+  deleteProperty(index) {
+    this.properties.splice(index, 1);
+    this.emitProperties();
+  }
+
+  updateProperty(property, index) {
+    this.properties[index] = property;
+    this.emitProperties();
+  }
+
 }
+
