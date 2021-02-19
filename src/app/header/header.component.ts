@@ -7,9 +7,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
 
+  title = "Ma Super Agence";
+
+  isDisabled: boolean = true;
+
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  onClick() {
+    this.isDisabled = false;
   }
 
 }
