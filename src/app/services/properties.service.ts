@@ -1,41 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Property } from '../interfaces/property';
+import firebase from "firebase/app";
 
 @Injectable({
   providedIn: 'root'
 })
 export class PropertiesService {
 
-  properties: Property[] = [
-    {
-      title: "Ma super maison",
-      category: "Maison",
-      surface: '250',
-      rooms: '7',
-      description: 'Une maison de rêve',
-      price: '300 000',
-      sold: true
-    },
-    {
-      title: "Petit appartement",
-      category: "Appartement",
-      surface: '60',
-      rooms: '2',
-      description: 'Un petit appartement bien situé',
-      price: '90 000',
-      sold: false
-    },
-    {
-      title: "Belle villa",
-      category: "Maison",
-      surface: '350',
-      rooms: '10',
-      description: 'Un bien d\'exception',
-      price: '450 000',
-      sold: true
-    },
-  ]
+  properties: Property[] = []
 
   propertiesSubject = new Subject<Property[]>();
   // Subject est un type d'observable qui met à disposition le .next
@@ -49,21 +22,40 @@ export class PropertiesService {
     // il émet les données de properties
   }
 
-  getProperties() {}
+  saveProperties() {
+    firebase.database().ref('/properties').set(this.properties);
+  }
+
+  getProperties() {
+    firebase.database().ref('/properties').on('value', (data) => {
+      this.properties = data.val() ? data.val() : [];
+      this.emitProperties();
+      });
+  }
 
 
   createProperties(property: Property) {
     this.properties.push(property)
+    this.saveProperties();
+    this.emitProperties();
   }
 
   deleteProperty(index) {
     this.properties.splice(index, 1);
+    this.saveProperties();
     this.emitProperties();
   }
 
   updateProperty(property: Property, index) {
-    this.properties[index] = property;
-    this.emitProperties();
+    // this.properties[index] = property;
+    // this.saveProperties();
+    // this.emitProperties();
+    //   ------ OR -------
+    firebase.database().ref('/properties/' + index).update(property).catch(
+      (error) => {
+        console.error(error);
+      }
+    );
   }
 
 }

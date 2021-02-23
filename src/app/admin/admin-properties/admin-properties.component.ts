@@ -30,6 +30,7 @@ export class AdminPropertiesComponent implements OnInit, OnDestroy {
         this.properties = data;
       }
     );
+    this.propertiesService.getProperties();
     this.propertiesService.emitProperties();
   }
 
@@ -47,6 +48,7 @@ export class AdminPropertiesComponent implements OnInit, OnDestroy {
 
   onSubmitPropertiesForm() {
     const newProperty: Property = this.propertiesForm.value;
+    newProperty.sold = this.propertiesForm.get('sold').value ? this.propertiesForm.get('sold').value : false;
     if(this.editMode) {
       this.propertiesService.updateProperty(newProperty, this.indexToUpdate)
     } else {
