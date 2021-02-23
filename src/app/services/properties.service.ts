@@ -1,31 +1,43 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
+import { Property } from '../interfaces/property';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PropertiesService {
 
-  properties = [
+  properties: Property[] = [
     {
       title: "Ma super maison",
       category: "Maison",
-      surface: '75',
+      surface: '250',
+      rooms: '7',
+      description: 'Une maison de rêve',
+      price: '300 000',
       sold: true
     },
     {
       title: "Petit appartement",
       category: "Appartement",
+      surface: '60',
+      rooms: '2',
+      description: 'Un petit appartement bien situé',
+      price: '90 000',
       sold: false
     },
     {
       title: "Belle villa",
       category: "Maison",
+      surface: '350',
+      rooms: '10',
+      description: 'Un bien d\'exception',
+      price: '450 000',
       sold: true
     },
   ]
 
-  propertiesSubject = new Subject<any[]>();
+  propertiesSubject = new Subject<Property[]>();
   // Subject est un type d'observable qui met à disposition le .next
   // Il faut voir le subject comme un émetteur il est à la fois un observable et un observer
   // c a d qu'il va observer les donnés de properties et dès qu'il y aura une modification il va les émettre
@@ -40,7 +52,7 @@ export class PropertiesService {
   getProperties() {}
 
 
-  createProperties(property) {
+  createProperties(property: Property) {
     this.properties.push(property)
   }
 
@@ -49,7 +61,7 @@ export class PropertiesService {
     this.emitProperties();
   }
 
-  updateProperty(property, index) {
+  updateProperty(property: Property, index) {
     this.properties[index] = property;
     this.emitProperties();
   }

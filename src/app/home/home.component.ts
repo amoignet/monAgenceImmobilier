@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { Property } from '../interfaces/property';
 import { PropertiesService } from '../services/properties.service';
 
 @Component({
@@ -9,7 +10,7 @@ import { PropertiesService } from '../services/properties.service';
 })
 export class HomeComponent implements OnInit, OnDestroy {
 
-  properties = [];
+  properties: Property[] = [];
   propertiesSubscription: Subscription;
 
   constructor(
@@ -18,7 +19,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.propertiesSubscription = this.propertiesService.propertiesSubject.subscribe(
-      (data: any) => {
+      (data: Property[]) => {
         this.properties = data;
       } // Au chargement on s'abonne grâce à propertiesSubscription
     );

@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { PropertiesService } from 'src/app/services/properties.service';
 import * as $ from 'jquery';
+import { Property } from 'src/app/interfaces/property';
 
 @Component({
   selector: 'app-admin-properties',
@@ -13,7 +14,7 @@ export class AdminPropertiesComponent implements OnInit, OnDestroy {
 
   propertiesForm: FormGroup;
   propertiesSubscription: Subscription;
-  properties: any[] = [];
+  properties: Property[] = [];
 
   indexToRemove;
 
@@ -25,7 +26,7 @@ export class AdminPropertiesComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.initPropertiesForm();
     this.propertiesSubscription = this.propertiesService.propertiesSubject.subscribe(
-      (data) => {
+      (data: Property[]) => {
         this.properties = data;
       }
     );
@@ -40,11 +41,12 @@ export class AdminPropertiesComponent implements OnInit, OnDestroy {
       rooms: ['', Validators.required],
       description: '',
       price: ['', Validators.required],
+      sold: '',
     })
   }
 
   onSubmitPropertiesForm() {
-    const newProperty = this.propertiesForm.value;
+    const newProperty: Property = this.propertiesForm.value;
     if(this.editMode) {
       this.propertiesService.updateProperty(newProperty, this.indexToUpdate)
     } else {
@@ -68,7 +70,7 @@ export class AdminPropertiesComponent implements OnInit, OnDestroy {
     $('#deletePropertyModal').modal('hide');
   }
 
-  onEditProperty(property) {
+  onEditProperty(property: Property) {
     this.editMode = true;
     $('#propertiesFormModal').modal('show');
     this.propertiesForm.get('title').setValue(property.title);
@@ -77,6 +79,7 @@ export class AdminPropertiesComponent implements OnInit, OnDestroy {
     this.propertiesForm.get('rooms').setValue(property.rooms);
     this.propertiesForm.get('description').setValue(property.description);
     this.propertiesForm.get('price').setValue(property.price);
+    this.propertiesForm.get('sold').setValue(property.sold);
     const index = this.properties.findIndex(
       (propertyEl) => {
         if(propertyEl === property) {

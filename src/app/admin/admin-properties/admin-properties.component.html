@@ -16,10 +16,14 @@
         </div>
       </div>
       <p>
-        {{property.category}} <span *ngIf="property.surface && property.surface !=='' "> de {{ property.surface }} m², </span> <span *ngIf="property.rooms && property.rooms !=='' ">{{property.rooms }} pièce(s)</span>
+        {{property.category}} <span *ngIf="property.surface && property.surface !=='' "> de {{ property.surface }} m²,  </span> <span *ngIf="property.rooms && property.rooms !=='' ">{{ property.rooms }} pièce(s)</span>
       </p>
       <p *ngIf="property.price && property.price !== '' ">
         {{ property.price }} €
+      </p>
+      <p>
+        <span class="text-success" *ngIf="property.sold">Vendu !</span>
+        <span class="text-danger" *ngIf="!property.sold">A vendre</span>
       </p>
     </div>
   </div>
@@ -37,7 +41,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-        <button type="button" class="btn btn-danger" (click)="onConfirmDeleteProperty()" >Supprimer</button>
+        <button type="button" class="btn btn-danger" (click)="onConfirmDeleteProperty()">Supprimer</button>
       </div>
     </div>
   </div>
@@ -81,9 +85,16 @@
           <div class="form-group">
             <input type="text"  placeholder="Prix" class="form-control" formControlName="price" >
           </div>
+          <div class="custom-control custom-switch">
+            <input class="custom-control-input" type="checkbox" id="customSwitch" formControlName="sold">
+            <label class="custom-control-label" for="customSwitch">
+              <span class="text-success" *ngIf="propertiesForm.value.sold">Vendu !</span>
+              <span class="text-danger" *ngIf="!propertiesForm.value.sold">A vendre</span>
+            </label>
+          </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
           <button type="submit" class="btn btn-primary" [disabled]="propertiesForm.invalid" >Enregistrer</button>
         </div>
       </form>
