@@ -4,25 +4,9 @@ import firebase from "firebase/app";
 @Injectable({
   providedIn: 'root'
 })
-export class AuthenticationService {
+export class AuthentificationService {
 
   constructor() { }
-
-  // signUpUser(email: string, password: string) {
-  //   return new Promise(
-  //     (resolve, reject) => {
-  //       firebase.auth().createUserWithEmailAndPassword(email, password).then(
-  //         () => {
-  //           resolve(console.log('connecté'));
-  //         }
-  //       ).catch(
-  //         (error) => {
-  //           reject(error)
-  //         }
-  //       )
-  //     }
-  //   );
-  // }
 
   signInUser(email: string, password: string) {
     return new Promise(
@@ -40,9 +24,24 @@ export class AuthenticationService {
     );
   }
 
-
   signOutUser() {
     firebase.auth().signOut();
   }
+
+  // signUpUser(email: string, password: string) {
+  //   return new Promise(
+  //     (resolve, reject) => {
+  //       firebase.auth().createUserWithEmailAndPassword(email, password).then(
+  //         () => {
+  //           resolve(console.log('connecté'));
+  //         }
+  //       ).catch(
+  //         (error) => {
+  //           reject(error)
+  //         }
+  //       )
+  //     }
+  //   );
+  // }
 
 }

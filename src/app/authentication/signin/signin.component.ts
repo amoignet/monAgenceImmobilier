@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthenticationService } from 'src/app/services/authentication.service';
+import { AuthentificationService } from 'src/app/services/authentification.service';
 
 
 @Component({
@@ -15,7 +15,7 @@ export class SigninComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private authenticationService: AuthenticationService,
+    private authentificationService: AuthentificationService,
     private router: Router
     ) { }
 
@@ -34,6 +34,17 @@ export class SigninComponent implements OnInit {
     const email = this.signinForm.get('email').value;
     const password = this.signinForm.get('password').value;
 
+    this.authentificationService.signInUser(email, password).then(
+      () => {
+        this.router.navigate(['/admin', 'dashboard']);
+      }
+      ).catch(
+        (error) => {
+          console.log(error);
+        }
+      );
+    }
+
   //   this.authenticationService.signUpUser(email, password).then(
   //     () => {
   //       console.log('OK');
@@ -43,16 +54,5 @@ export class SigninComponent implements OnInit {
   //       console.log(error);
   //     }
   //   );
-
-  this.authenticationService.signInUser(email, password).then(
-    () => {
-      this.router.navigate(['/admin', 'dashboard']);
-    }
-    ).catch(
-      (error) => {
-        console.log(error);
-      }
-    );
-  }
 
 }

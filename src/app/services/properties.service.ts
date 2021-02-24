@@ -23,10 +23,12 @@ export class PropertiesService {
   }
 
   saveProperties() {
+    // envoie les datas à properties: Property[] = [] à chaques fois qu'il est appelé (createProperties, deleteProperty)
     firebase.database().ref('/properties').set(this.properties);
   }
 
   getProperties() {
+    // .on() détecte chacune des modifications des données puis emitProperties() rafraichit les données à chaques modifications
     firebase.database().ref('/properties').on('value', (data) => {
       this.properties = data.val() ? data.val() : [];
       this.emitProperties();
@@ -52,10 +54,52 @@ export class PropertiesService {
     // this.emitProperties();
     //   ------ OR -------
     firebase.database().ref('/properties/' + index).update(property).catch(
+      // pas besoin de this.emitProperties() car .on() dans getProperties() va détecter le changement.
       (error) => {
         console.error(error);
       }
     );
+  }
+
+  uploadFile(file: File) {
+    return new Promise(
+      (resolve, reject) => {
+        const uniqueId = Date.now().toString();
+        const fileName = uniqueId + file.name;
+        const upload = firebase.storage().ref().child('images/properties/' + fileName).put(file);
+        upload.on(firebase.storage.TaskEvent.STATE_CHANGED,
+          () => {
+            console.log('Chargement...');
+          },
+          (error) =>{
+            console.error(error);
+            reject(error);
+          },
+          () => {
+            upload.snapshot.ref.getDownloadURL().then(
+              (downloadUrl) => {
+                resolve(downloadUrl);
+              }
+            );
+          }
+        );
+      }
+    );
+  }
+
+  removeFile(fileLink: string) {
+    if(fileLink) {
+      const storageRef = firebase.storage().refFromURL(fileLink);
+      storageRef.delete().then(
+        () => {
+          console.log('file deleted');
+        }
+      ).catch(
+        (error) => {
+          console.error(error);
+        }
+      )
+    }
   }
 
 }

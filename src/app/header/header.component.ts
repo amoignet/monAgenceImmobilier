@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthenticationService } from '../services/authentication.service';
+import { AuthentificationService } from '../services/authentification.service';
 import firebase from "firebase/app";
 
 @Component({
@@ -12,7 +12,7 @@ export class HeaderComponent implements OnInit {
   title = "Mon Agence Immobilière";
   isLoggedIn: boolean = false;
 
-  constructor(private authenticationService: AuthenticationService) { }
+  constructor(private authentificationService: AuthentificationService) { }
 
   ngOnInit(): void {
     firebase.auth().onAuthStateChanged(
@@ -24,11 +24,11 @@ export class HeaderComponent implements OnInit {
           this.isLoggedIn = false;
         }
       }
-    )
+    );
   }
 
   onSignOut() {
-    this.authenticationService.signOutUser();
+    this.authentificationService.signOutUser();
   }
 
 }
