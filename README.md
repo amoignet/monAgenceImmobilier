@@ -8,7 +8,7 @@ the BDD is on fireBase.
 - Install dependencies 
   `npm i`
 - Launch the server 
-  `ng server`
+  `ng serve`
 
 I deploy the website with fireBase,
 Link for the site : monagence-7c9fb.firebaseapp.com
